@@ -11,19 +11,7 @@
 import { useState, useEffect } from 'react';
 import { getProducts, getCategories } from '@/lib/api';
 
-interface Product {
-  id: string;
-  name: string;
-  description: string | null;
-  price: number;
-  stock: number;
-  imageUrl: string | null;
-  isActive: boolean;
-  category: {
-    id: string;
-    name: string;
-  };
-}
+import type { Product } from '@/lib/types';
 
 export default function CashierProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -197,7 +185,7 @@ export default function CashierProductsPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">
-                        {product.category.name}
+                        {product.category?.name || 'Sin categoría'}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right">
