@@ -279,7 +279,8 @@ function UserDetailModal({ user, onClose, onRefresh }: UserDetailModalProps) {
   const [formData, setFormData] = useState({ 
     name: user.name, 
     phone: user.phone || '', 
-    role: user.role 
+    role: user.role,
+    password: ''
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -287,7 +288,11 @@ function UserDetailModal({ user, onClose, onRefresh }: UserDetailModalProps) {
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      await updateUserAdmin(user.id, formData);
+      const dataToUpdate: any = { ...formData };
+      if (!dataToUpdate.password || dataToUpdate.password.trim() === '') {
+        delete dataToUpdate.password;
+      }
+      await updateUserAdmin(user.id, dataToUpdate);
       onRefresh();
     } catch (error: any) {
       alert(error.message || 'Error al actualizar usuario');
@@ -439,6 +444,20 @@ function UserDetailModal({ user, onClose, onRefresh }: UserDetailModalProps) {
                       <option value="DELIVERER">Domiciliario</option>
                       <option value="ADMIN">Administrador</option>
                     </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+                      Nueva Contraseña (Opcional)
+                    </label>
+                    <input
+                      type="text"
+                      disabled={!isEditing}
+                      placeholder="Dejar en blanco para no cambiar"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-600 disabled:bg-slate-100 disabled:text-slate-600 dark:bg-slate-800 dark:text-white"
+                    />
                   </div>
                 </div>
               </div>

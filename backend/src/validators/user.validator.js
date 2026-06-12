@@ -17,7 +17,11 @@ export const updateUserSchema = Joi.object({
       'any.only': 'Rol inválido.',
     }),
 
-  isActive: Joi.boolean()
+  isActive: Joi.boolean(),
+
+  password: Joi.string().min(6).optional().messages({
+    'string.min': 'La nueva contraseña debe tener al menos 6 caracteres.',
+  })
 }).min(1).messages({
   'object.min': 'Debes enviar al menos un campo para actualizar.',
 });

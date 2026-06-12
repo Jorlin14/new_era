@@ -1,4 +1,5 @@
 import prisma from '../config/database.js';
+import bcrypt from 'bcryptjs';
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -80,7 +81,7 @@ export const getAllUsers = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, phone, role, isActive } = req.body;
+    const { name, phone, role, isActive, password } = req.body;
 
     const userExists = await prisma.user.findUnique({ where: { id } });
     if (!userExists) {
@@ -89,6 +90,12 @@ export const updateUser = async (req, res) => {
 
     // No permitir cambiar el rol de ADMIN del superusuario (protección opcional, asumimos que todos los ADMINs pueden editar menos a sí mismos si quisiéramos)
     
+    let hashedPassword;
+    if (password) {
+      const SALT_ROUNDS = 12;
+      hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id },
       data: {
@@ -96,6 +103,7 @@ export const updateUser = async (req, res) => {
         ...(phone !== undefined && { phone }),
         ...(role !== undefined && { role }),
         ...(isActive !== undefined && { isActive }),
+        ...(hashedPassword && { password: hashedPassword }),
       },
       select: {
         id: true,
