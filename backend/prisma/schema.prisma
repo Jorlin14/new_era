@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  DELIVERER
+  CASHIER
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PREPARING
+  DISPATCHED
+  DELIVERED
+  CANCELLED
+}
+
+model User {
+
+  id                String    @id @default(uuid())
+  email             String    @unique
+  password          String   
+  name              String
+  phone             String?
+  role              Role      @default(CUSTOMER)
+  isActive          Boolean   @default(true)
+  
+  // Campos para recuperación de contraseña
+  resetToken        String?   @unique
+  resetTokenExpiry  DateTime?
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  ordersAsCustomer  Order[]   @relation("CustomerOrders")
+  ordersAsDeliverer Order[]   @relation("DelivererOrders")
+  ordersAsCashier   Order[]   @relation("CashierOrders")
+
+  addresses         Address[]
+
+  @@map("users") 
+
+}
+
+model Address {
+
+  id        String  @id @default(uuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  label     String
+  address   String
+  city         String  @default("Ibagué")
+  neighborhood String
+  details      String?
+  latitude  Float?
+  longitude Float?
+  isDefault Boolean @default(false)
+
+  @@map("addresses")
+
+}
+
+model Order {
+
+  id          String      @id @default(uuid())
+  status      OrderStatus @default(PENDING)
+  total       Decimal     @db.Decimal(10, 2)
+  address     String
+
+  // Tiempos para KPIs
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  dispatchedAt DateTime?
+  deliveredAt  DateTime?
+
+  customerId  String
+  customer    User        @relation("CustomerOrders", fields: [customerId], references: [id])
+
+  delivererId String?
+  deliverer   User?       @relation("DelivererOrders", fields: [delivererId], references: [id])
+
+  cashierId   String?
+  cashier     User?       @relation("CashierOrders", fields: [cashierId], references: [id])
+
+  items       OrderItem[]
+
+  @@index([customerId])
+  @@index([status])
+  @@map("orders")
+
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  products  Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2) // Manejo profesional de dinero
+  stock       Int      @default(0)
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[]
+
+  @@map("products")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  quantity  Int
+  unitPrice Decimal @db.Decimal(10, 2) 
+
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+
+// Modelo de Promociones/Popups
+model Promotion {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  imageUrl    String?
+  ctaText     String   @default("Ver más")
+  ctaLink     String?
+  isActive    Boolean  @default(true)
+  startDate   DateTime @default(now())
+  endDate     DateTime?
+  priority    Int      @default(0) // Mayor número = mayor prioridad
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("promotions")
+}

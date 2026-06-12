@@ -1,0 +1,400 @@
+/**
+ * Hero Banner Styles - New Era Supermercado
+ * 
+ * Estilos para el hero carousel con diseño split:
+ * - Lado izquierdo: gradiente verde con texto y CTA
+ * - Lado derecho: imagen del producto
+ * - Indicadores de navegación (dots) en la parte inferior
+ * - Botones prev/next para navegación manual
+ * 
+ * Diseño responsivo:
+ * - Mobile: imagen como fondo con overlay, texto centrado
+ * - Desktop: layout split horizontal 50/50
+ */
+
+/* ==================== CONTENEDOR PRINCIPAL ==================== */
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: transparent;
+  padding: 16px 0;
+}
+
+.hero-wrapper {
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 12px;
+}
+
+@media (min-width: 640px) {
+  .hero-wrapper {
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-wrapper {
+    padding: 0 32px;
+  }
+}
+
+/* ==================== SLIDE CONTAINER ==================== */
+
+.hero-slide {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 768px) {
+  .hero-slide {
+    flex-direction: row;
+    min-height: 480px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-slide {
+    min-height: 560px;
+  }
+}
+
+/* ==================== LADO IZQUIERDO (TEXTO) ==================== */
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 24px 60px;
+  background: linear-gradient(135deg, #2e7d32 0%, #388e3c 40%, #43a047 80%, transparent 100%);
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .hero-content {
+    width: 55%;
+    padding: 48px 40px 48px 48px;
+    background: linear-gradient(135deg, #2e7d32 0%, #388e3c 40%, #43a047 70%, transparent 100%);
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-content {
+    width: 50%;
+    padding: 56px 48px 56px 56px;
+  }
+}
+
+.hero-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: #ffffff;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  max-width: 480px;
+}
+
+@media (min-width: 640px) {
+  .hero-title {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+}
+
+.hero-description {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 28px;
+  max-width: 420px;
+}
+
+@media (min-width: 640px) {
+  .hero-description {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-description {
+    font-size: 1rem;
+    margin-bottom: 32px;
+  }
+}
+
+/* ==================== BOTÓN CTA ==================== */
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background-color: #1b5e20;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  width: fit-content;
+  box-shadow: 0 4px 14px rgba(27, 94, 32, 0.4);
+}
+
+.hero-cta:hover {
+  background-color: #145218;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(27, 94, 32, 0.5);
+}
+
+.hero-cta:active {
+  transform: translateY(0);
+}
+
+/* ==================== LADO DERECHO (IMAGEN) ==================== */
+
+.hero-image-container {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .hero-image-container {
+    position: relative;
+    width: 45%;
+    min-height: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-image-container {
+    width: 50%;
+  }
+}
+
+.hero-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+}
+
+@media (min-width: 768px) {
+  .hero-image-wrapper {
+    min-height: 480px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-image-wrapper {
+    min-height: 560px;
+  }
+}
+
+/* ==================== NAVEGACIÓN (DOTS) ==================== */
+
+.hero-nav {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .hero-nav {
+    justify-content: flex-start;
+    left: 48px;
+    right: auto;
+    bottom: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-nav {
+    left: 56px;
+    bottom: 28px;
+  }
+}
+
+.hero-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.hero-dot:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.hero-dot.active {
+  background: #ffffff;
+  border-color: #ffffff;
+  transform: scale(1.15);
+}
+
+/* ==================== FLECHAS DE NAVEGACIÓN ==================== */
+
+.hero-arrows {
+  position: absolute;
+  bottom: 20px;
+  right: 24px;
+  z-index: 20;
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .hero-arrows {
+    display: flex;
+    bottom: 24px;
+    right: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-arrows {
+    right: 32px;
+    bottom: 28px;
+  }
+}
+
+.hero-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  padding: 0;
+  backdrop-filter: blur(4px);
+}
+
+.hero-arrow:hover {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.hero-arrow svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2.5;
+}
+
+/* ==================== ANIMACIONES DE TRANSICIÓN ==================== */
+
+.hero-fade-enter {
+  opacity: 0;
+  transform: scale(1.02);
+}
+
+.hero-fade-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.hero-text-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-text-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-title-anim {
+  animation: heroTextIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-desc-anim {
+  animation: heroTextIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  opacity: 0;
+}
+
+.hero-cta-anim {
+  animation: heroTextIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  opacity: 0;
+}
+
+.hero-image-anim {
+  animation: heroImageIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes heroTextIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroImageIn {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==================== DARK MODE ==================== */
+
+.dark .hero-section {
+  background: transparent;
+}
+
+.dark .hero-content {
+  background: linear-gradient(135deg, #022c22 0%, #064e3b 40%, #059669 80%, transparent 100%);
+}
+
+.dark .hero-arrow {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+}
+
+.dark .hero-arrow:hover {
+  background: rgba(51, 65, 85, 0.95);
+  border-color: rgba(255, 255, 255, 0.25);
+}
