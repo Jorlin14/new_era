@@ -14,7 +14,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
 import CategoryIcon from '@/components/CategoryIcon';
 import { FREE_SHIPPING_THRESHOLD } from '@/lib/constants';
@@ -226,15 +226,12 @@ function EmptyCart() {
  * @returns {JSX.Element}
  */
 function CartIcon() {
-  return (
-    // @ts-ignore
-    <lord-icon
-      src="/wired-outline-146-trolley-hover-jump.json"
-      trigger="hover"
-      colors="primary:#1c6554,secondary:#1c6554"
-      style={{ width: "24px", height: "24px" }}
-    ></lord-icon>
-  );
+  return React.createElement('lord-icon', {
+    src: "/wired-outline-146-trolley-hover-jump.json",
+    trigger: "hover",
+    colors: "primary:#1c6554,secondary:#1c6554",
+    style: { width: "24px", height: "24px" }
+  });
 }
 
 /**

@@ -78,19 +78,20 @@ export default function PromotionPopup() {
     const promotion = promotions[currentIndex];
     handleClose();
     
-    if (promotion.ctaLink) {
+    const link = promotion.ctaLink;
+    if (link) {
       // Si el enlace es un hash (#productos, #categorias, etc.)
-      if (promotion.ctaLink.startsWith('#')) {
+      if (link.startsWith('#')) {
         // Esperar a que se cierre el popup antes de hacer scroll
         setTimeout(() => {
-          const element = document.querySelector(promotion.ctaLink);
+          const element = document.querySelector(link);
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         }, 400);
       } else {
         // Si es una ruta completa (/productos, /categorias, etc.)
-        router.push(promotion.ctaLink);
+        router.push(link);
       }
     }
   }

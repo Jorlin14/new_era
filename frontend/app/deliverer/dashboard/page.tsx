@@ -25,6 +25,10 @@ interface Order {
     name: string;
     phone?: string;
   };
+  deliverer?: {
+    id: string;
+    name: string;
+  };
   items: Array<{
     id: string;
     quantity: number;

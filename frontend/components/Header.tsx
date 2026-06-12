@@ -528,27 +528,26 @@ function CloseIcon() {
  * @returns {JSX.Element}
  */
 function CartIcon() {
+  const React = require('react');
   return (
     <>
       <div className="dark:hidden flex items-center">
-        {/* @ts-ignore */}
-        <lord-icon
-          src="/wired-outline-146-trolley-hover-jump.json"
-          trigger="hover"
-          target="#cart-button"
-          colors="primary:#1c6554,secondary:#1c6554"
-          style={{ width: "24px", height: "24px" }}
-        ></lord-icon>
+        {React.createElement('lord-icon', {
+          src: "/wired-outline-146-trolley-hover-jump.json",
+          trigger: "hover",
+          target: "#cart-button",
+          colors: "primary:#1c6554,secondary:#1c6554",
+          style: { width: "24px", height: "24px" }
+        })}
       </div>
       <div className="hidden dark:flex items-center">
-        {/* @ts-ignore */}
-        <lord-icon
-          src="/wired-outline-146-trolley-hover-jump.json"
-          trigger="hover"
-          target="#cart-button"
-          colors="primary:#ffffff,secondary:#1c6554"
-          style={{ width: "24px", height: "24px" }}
-        ></lord-icon>
+        {React.createElement('lord-icon', {
+          src: "/wired-outline-146-trolley-hover-jump.json",
+          trigger: "hover",
+          target: "#cart-button",
+          colors: "primary:#ffffff,secondary:#1c6554",
+          style: { width: "24px", height: "24px" }
+        })}
       </div>
     </>
   );
