@@ -29,14 +29,14 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+const corsOrigin = frontendUrl === '*' ? '*' : [frontendUrl, 'http://localhost:3000'];
+
 // CREACIÓN DEL SERVIDOR HTTP Y SOCKET.IO
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: [
-      process.env.FRONTEND_URL || 'http://localhost:5173',
-      'http://localhost:3000'
-    ],
+    origin: corsOrigin,
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -83,10 +83,7 @@ app.use(helmet({
 
 // CORS
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || 'http://localhost:5173',
-    'http://localhost:3000' // Next.js frontend
-  ],
+  origin: corsOrigin,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
