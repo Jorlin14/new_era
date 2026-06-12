@@ -372,7 +372,7 @@ function UserDetailModal({ user, onClose, onRefresh }: UserDetailModalProps) {
                     <div className="flex gap-2">
                       <button
                         onClick={() => {
-                          setFormData({ name: user.name, phone: user.phone || '', role: user.role });
+                          setFormData({ name: user.name, phone: user.phone || '', role: user.role, password: '' });
                           setIsEditing(false);
                         }}
                         className="cursor-pointer text-sm font-medium px-4 py-2 hover:bg-slate-200 rounded-lg"
