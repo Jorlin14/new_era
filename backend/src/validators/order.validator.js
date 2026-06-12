@@ -36,13 +36,13 @@ export const createOrderSchema = Joi.object({
         quantity: Joi.number()
           .integer()
           .min(1)
-          .max(99)
+          .max(999)
           .required()
           .messages({
             'number.base': 'La cantidad debe ser un número.',
             'number.integer': 'La cantidad debe ser un número entero.',
             'number.min': 'La cantidad mínima por producto es 1.',
-            'number.max': 'La cantidad máxima por producto es 99.',
+            'number.max': 'La cantidad máxima por producto es 999.',
             'any.required': 'La cantidad es obligatoria en cada ítem.',
           }),
       })

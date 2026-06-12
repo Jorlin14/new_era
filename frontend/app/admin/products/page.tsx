@@ -24,7 +24,9 @@ import {
   getAllProductsAdmin
 } from '@/lib/api-admin';
 import type { Product, Category } from '@/lib/types';
+import CategoryIcon from '@/components/CategoryIcon';
 import ImageUpload from '@/components/admin/ImageUpload';
+import { getImageUrl } from '@/lib/constants';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -270,7 +272,7 @@ export default function ProductsPage() {
                       <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 overflow-hidden">
                         {product.imageUrl && !imageErrors.has(product.id) ? (
                           <img 
-                            src={product.imageUrl} 
+                            src={getImageUrl(product.imageUrl) || ''} 
                             alt={product.name}
                             className="w-full h-full object-cover"
                             onError={() => {

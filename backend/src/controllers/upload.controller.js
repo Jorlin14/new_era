@@ -23,21 +23,16 @@ export const uploadProductImage = async (req, res, next) => {
       throw new AppError('No se proporcionó ninguna imagen', 400);
     }
 
-    // Construir URL pública de la imagen
-    // Opción 1: URL relativa (recomendada para evitar problemas CORS)
-    const imageUrl = `/uploads/products/${req.file.filename}`;
-    
-    // Opción 2: URL absoluta con el backend
-    // const port = process.env.PORT || 4000;
-    // const baseUrl = `${req.protocol}://${req.hostname}:${port}`;
-    // const imageUrl = `${baseUrl}/uploads/products/${req.file.filename}`;
+    // Convertir el buffer a base64
+    const base64Str = req.file.buffer.toString('base64');
+    const imageUrl = `data:${req.file.mimetype};base64,${base64Str}`;
 
     res.status(200).json({
       success: true,
       message: 'Imagen subida exitosamente',
       data: {
         imageUrl,
-        filename: req.file.filename,
+        filename: req.file.originalname,
         size: req.file.size,
         mimetype: req.file.mimetype
       }

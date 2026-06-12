@@ -24,20 +24,10 @@ if (!fs.existsSync(UPLOAD_DIR)) {
 }
 
 /**
- * Configuración de almacenamiento de multer
- * Define dónde y con qué nombre se guardan los archivos
+ * Configuración de almacenamiento de multer (en Memoria)
+ * Esto permite guardar las imágenes como Base64 en la Base de Datos
  */
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, UPLOAD_DIR);
-  },
-  filename: function (req, file, cb) {
-    // Generar nombre único: timestamp-random-nombre.ext
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, `product-${uniqueSuffix}${ext}`);
-  }
-});
+const storage = multer.memoryStorage();
 
 /**
  * Filtro de archivos permitidos
@@ -76,14 +66,11 @@ export const upload = multer({
   }
 });
 
-/**
- * Elimina una imagen del servidor
- * 
- * @param {string} imageUrl - URL de la imagen a eliminar
- * @returns {boolean} true si se eliminó, false si no
- */
 export function deleteImage(imageUrl) {
   if (!imageUrl) return false;
+  
+  // Si es base64, no hay nada que borrar del sistema de archivos
+  if (imageUrl.startsWith('data:')) return true;
 
   try {
     // Extraer el nombre del archivo de la URL

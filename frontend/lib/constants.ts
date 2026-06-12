@@ -41,8 +41,8 @@ export const BACKEND_BASE_URL = API_BASE_URL.replace(/\/api$/, '');
 export function getImageUrl(imageUrl?: string | null): string | null {
   if (!imageUrl) return null;
   
-  // Si ya es una URL absoluta, devolverla tal cual
-  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+  // Si ya es una URL absoluta o base64, devolverla tal cual
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://') || imageUrl.startsWith('data:')) {
     return imageUrl;
   }
   
