@@ -460,7 +460,8 @@ function PromotionModal({ promotion, onClose, onSave }: PromotionModalProps) {
     </div>
   );
 }
-function formatDate(dateStr: string): string {
+function formatDate(dateStr?: string): string {
+  if (!dateStr) return 'Sin fecha';
   const date = new Date(dateStr);
   return date.toLocaleDateString('es-ES', { 
     year: 'numeric', 
