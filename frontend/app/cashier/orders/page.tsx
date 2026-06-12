@@ -38,7 +38,7 @@ export default function CashierOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>('ALL');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [updating, setUpdating] = useState(false);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<{ text: string; type: 'success' | 'error' | 'info' } | null>(null);
   const [pendingStatusChange, setPendingStatusChange] = useState<{ orderId: string; newStatus: string } | null>(null);
 
@@ -71,7 +71,7 @@ export default function CashierOrdersPage() {
     setPendingStatusChange(null);
 
     try {
-      setUpdating(true);
+      setUpdatingId(orderId);
       await updateOrderStatus(orderId, newStatus);
       setToastMessage({ text: 'Estado actualizado correctamente', type: 'success' });
       loadOrders();
@@ -79,7 +79,7 @@ export default function CashierOrdersPage() {
       console.error('Error al actualizar estado:', error);
       setToastMessage({ text: error.message || 'Error al actualizar estado', type: 'error' });
     } finally {
-      setUpdating(false);
+      setUpdatingId(null);
     }
   };
 
@@ -279,7 +279,7 @@ export default function CashierOrdersPage() {
                     <button
                       key={action.value}
                       onClick={() => handleStatusChange(order.id, action.value)}
-                      disabled={updating}
+                      disabled={updatingId === order.id}
                       className="flex-1 bg-gradient-to-r from-[#1c6554] to-[#0C447C] text-white px-4 py-2.5 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {action.label}

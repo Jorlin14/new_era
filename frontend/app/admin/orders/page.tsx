@@ -42,7 +42,7 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>('ALL');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [updating, setUpdating] = useState(false);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   useEffect(() => {
     loadOrders();
@@ -69,7 +69,7 @@ export default function AdminOrdersPage() {
     }
 
     try {
-      setUpdating(true);
+      setUpdatingId(orderId);
       await updateOrderStatus(orderId, newStatus);
       alert('Estado actualizado correctamente');
       loadOrders();
@@ -80,7 +80,7 @@ export default function AdminOrdersPage() {
       console.error('Error al actualizar estado:', error);
       alert(error.message || 'Error al actualizar estado');
     } finally {
-      setUpdating(false);
+      setUpdatingId(null);
     }
   };
 
@@ -334,7 +334,7 @@ export default function AdminOrdersPage() {
                     <button
                       key={status}
                       onClick={() => handleStatusChange(selectedOrder.id, status)}
-                      disabled={updating || selectedOrder.status === status}
+                      disabled={updatingId === selectedOrder.id || selectedOrder.status === status}
                       className={`cursor-pointer px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                         selectedOrder.status === status
                           ? 'bg-slate-200 text-slate-500 cursor-not-allowed'

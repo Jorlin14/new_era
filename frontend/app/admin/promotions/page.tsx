@@ -16,6 +16,7 @@
 
 import { useState, useEffect } from 'react';
 import { getPromotions } from '@/lib/api';
+import { getImageUrl } from '@/lib/constants';
 import {
   createPromotion,
   updatePromotion,
@@ -160,9 +161,13 @@ export default function PromotionsPage() {
             <div className="h-48 bg-slate-100 dark:bg-slate-800 relative">
               {promotion.imageUrl ? (
                 <img
-                  src={promotion.imageUrl}
+                  src={getImageUrl(promotion.imageUrl) || ''}
                   alt={promotion.title}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error('Failed to load promotion image:', promotion.imageUrl);
+                    e.currentTarget.style.display = 'none';
+                  }}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">

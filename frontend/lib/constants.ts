@@ -22,3 +22,30 @@ export const CART_STORAGE_KEY = 'new-era-cart';
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api';
 
+/** URL base del backend (sin /api) para archivos estáticos */
+export const BACKEND_BASE_URL = API_BASE_URL.replace(/\/api$/, '');
+
+/**
+ * Convierte una URL de imagen relativa o absoluta a una URL absoluta del backend
+ * 
+ * @param imageUrl - URL de la imagen (puede ser relativa o absoluta)
+ * @returns URL absoluta lista para usar
+ * 
+ * @example
+ * getImageUrl('/uploads/products/image.jpg') 
+ * // => 'http://localhost:4000/uploads/products/image.jpg'
+ * 
+ * getImageUrl('http://localhost:4000/uploads/products/image.jpg')
+ * // => 'http://localhost:4000/uploads/products/image.jpg'
+ */
+export function getImageUrl(imageUrl?: string | null): string | null {
+  if (!imageUrl) return null;
+  
+  // Si ya es una URL absoluta, devolverla tal cual
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
+  }
+  
+  // Si es relativa, construir URL absoluta
+  return `${BACKEND_BASE_URL}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+}

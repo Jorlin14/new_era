@@ -12,6 +12,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getPromotions } from '@/lib/api';
+import { getImageUrl } from '@/lib/constants';
 import type { Promotion } from '@/lib/types';
 
 export default function PromotionPopup() {
@@ -20,6 +21,7 @@ export default function PromotionPopup() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [imageError, setImageError] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     loadPromotions();
@@ -40,7 +42,10 @@ export default function PromotionPopup() {
     try {
       const { data: allPromotions } = await getPromotions({ onlyActive: true });
       
+      console.log('[PromotionPopup] Loaded promotions:', allPromotions);
+      
       if (!allPromotions || allPromotions.length === 0) {
+        console.log('[PromotionPopup] No active promotions found');
         return;
       }
 
@@ -48,6 +53,11 @@ export default function PromotionPopup() {
       const sorted = allPromotions.sort((a: Promotion, b: Promotion) => b.priority - a.priority);
       
       setPromotions(sorted);
+      
+      // Log image URLs for debugging
+      sorted.forEach((promo: Promotion) => {
+        console.log(`[PromotionPopup] Promotion "${promo.title}" imageUrl:`, promo.imageUrl);
+      });
       
       // Mostrar popup con animación después de 1 segundo
       setTimeout(() => {
@@ -168,18 +178,29 @@ export default function PromotionPopup() {
         <div className="grid md:grid-cols-2">
           {/* Image Side */}
           <div className="relative h-64 md:h-auto bg-slate-800">
-            {promotion.imageUrl ? (
+            {promotion.imageUrl && !imageError[promotion.id] ? (
               <img
                 key={promotion.id}
-                src={promotion.imageUrl}
+                src={getImageUrl(promotion.imageUrl) || ''}
                 alt={promotion.title}
                 className="w-full h-full object-cover transition-opacity duration-500"
+                onError={(e) => {
+                  console.error(`[PromotionPopup] Failed to load image for "${promotion.title}":`, promotion.imageUrl);
+                  console.error('[PromotionPopup] Resolved URL:', getImageUrl(promotion.imageUrl));
+                  setImageError(prev => ({ ...prev, [promotion.id]: true }));
+                }}
+                onLoad={() => {
+                  console.log(`[PromotionPopup] Successfully loaded image for "${promotion.title}"`);
+                }}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
+              <div className="w-full h-full flex items-center justify-center flex-col gap-3">
                 <div className="text-slate-600">
                   <ImageIcon />
                 </div>
+                {imageError[promotion.id] && (
+                  <p className="text-slate-500 text-sm">No se pudo cargar la imagen</p>
+                )}
               </div>
             )}
             {/* Gradient Overlay on mobile */}
