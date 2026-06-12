@@ -286,15 +286,6 @@ export default function AnimatedAuth({ initialMode = 'login' }: AnimatedAuthProp
                 icon={<LockIcon />}
               />
 
-              <div className="text-right">
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-sm text-[#1c6554] dark:text-green-400 hover:text-[#1c6554]/70 dark:hover:text-green-300 font-semibold transition-colors"
-                >
-                  ¿Olvidaste tu contraseña?
-                </Link>
-              </div>
-
               <SubmitButton loading={isLoading} disabled={isAnimating} label="Iniciar sesión" loadingLabel="Iniciando..." />
 
               <p className="text-base text-center text-slate-700 dark:text-slate-300 font-normal pt-4">
