@@ -33,11 +33,10 @@ export const createPromotionSchema = Joi.object({
     }),
 
   imageUrl: Joi.string()
-    .uri()
     .optional()
     .allow(null, '')
     .messages({
-      'string.uri': 'La URL de la imagen no es válida',
+      'string.base': 'La URL de la imagen debe ser una cadena de texto',
     }),
 
   ctaText: Joi.string()
@@ -106,11 +105,10 @@ export const updatePromotionSchema = Joi.object({
     }),
 
   imageUrl: Joi.string()
-    .uri()
     .optional()
     .allow(null, '')
     .messages({
-      'string.uri': 'La URL de la imagen no es válida',
+      'string.base': 'La URL de la imagen debe ser una cadena de texto',
     }),
 
   ctaText: Joi.string()

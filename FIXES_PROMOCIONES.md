@@ -3,26 +3,61 @@
 ## Problema Reportado
 Las imágenes de las promociones no se muestran correctamente en los popups cuando se suben desde el dashboard de administración.
 
+**Error específico:** "Error al guardar promoción. Error de validación"
+
 ## Causas Identificadas
 
-### 1. **URLs de Imagen Inconsistentes**
+### 1. **Validación Incorrecta de URLs** ⚠️ **CAUSA PRINCIPAL**
+- El validador Joi requería que `imageUrl` fuera una URI completa con esquema (http/https)
+- El backend ahora devuelve URLs relativas (`/uploads/products/...`)
+- Esto causaba el error "Error de validación" al intentar guardar
+
+### 2. **URLs de Imagen Inconsistentes**
 - El backend devolvía URLs absolutas con `localhost:4000` hardcodeado
 - Esto causaba problemas cuando el frontend se ejecutaba en un puerto diferente
 - En producción, estas URLs fallarían completamente
 
-### 2. **Falta de Soporte para Dark Mode**
+### 3. **Falta de Soporte para Dark Mode**
 - El componente `ImageUpload` no tenía estilos para modo oscuro
 - Los labels y textos no eran visibles en dark mode
 - Los bordes y colores de progreso no se adaptaban
 
-### 3. **Manejo de Errores Insuficiente**
+### 4. **Manejo de Errores Insuficiente**
 - No había feedback visual cuando una imagen fallaba al cargar
 - No había logs de debugging para diagnosticar problemas
 - El componente no manejaba imágenes rotas
 
 ## Soluciones Implementadas
 
-### 1. **Sistema de URLs Relativas y Función Helper**
+### 1. **Corrección de Validadores** ✅ **FIX CRÍTICO**
+
+#### `promotion.validator.js`
+```javascript
+// ANTES: Requería URI completa
+imageUrl: Joi.string()
+  .uri()  // ❌ Rechaza URLs relativas
+  .optional()
+
+// AHORA: Acepta cualquier string
+imageUrl: Joi.string()
+  .optional()
+  .allow(null, '')
+```
+
+#### `product.validator.js`
+```javascript
+// ANTES
+imageUrl: Joi.string()
+  .uri({ scheme: ['http', 'https'] })
+  .optional()
+
+// AHORA
+imageUrl: Joi.string()
+  .optional()
+  .allow('')
+```
+
+### 2. **Sistema de URLs Relativas y Función Helper**
 
 #### Backend (`upload.controller.js`)
 ```javascript
@@ -131,8 +166,11 @@ Todos los componentes ahora usan la función helper:
 ```
 backend/
   └── src/
-      └── controllers/
-          └── upload.controller.js          ⚠️ URL relativa
+      ├── controllers/
+      │   └── upload.controller.js          ⚠️ URL relativa
+      └── validators/
+          ├── promotion.validator.js        ✅ FIX: Acepta URLs relativas
+          └── product.validator.js          ✅ FIX: Acepta URLs relativas
 
 frontend/
   ├── lib/
@@ -168,23 +206,34 @@ frontend/
 
 Para verificar las correcciones:
 
-1. **Modo Oscuro**
-   - Activar dark mode en el sistema
-   - Ir a Admin > Promociones
-   - Verificar que todos los textos sean visibles
+1. **Reiniciar el Backend** ⚠️ IMPORTANTE
+   ```bash
+   cd backend
+   # Detener el servidor (Ctrl+C)
+   # Reiniciar
+   node server.js
+   ```
 
-2. **Upload de Imagen**
-   - Crear nueva promoción
+2. **Reiniciar el Frontend**
+   ```bash
+   cd frontend
+   # Detener el servidor (Ctrl+C)
+   # Reiniciar
+   npm run dev
+   ```
+
+3. **Test de Upload**
+   - Ir a Admin > Promociones > Nueva Promoción
    - Subir imagen
-   - Verificar preview inmediato
+   - Verificar que NO aparezca "Error de validación"
    - Guardar promoción
 
-3. **Popup Público**
+4. **Test de Popup**
    - Ir a la página principal
    - Esperar 1 segundo
    - Verificar que aparezca el popup con la imagen
 
-4. **Console Logs**
+5. **Console Logs**
    - Abrir DevTools Console
    - Buscar logs `[PromotionPopup]`
    - Verificar URLs resueltas correctamente

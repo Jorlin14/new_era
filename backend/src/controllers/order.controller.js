@@ -17,7 +17,7 @@ import prisma from '../config/database.js';
 const DELIVERER_ALLOWED = ['DISPATCHED', 'DELIVERED'];
 
 /** Estados que puede actualizar personal de tienda */
-const STAFF_ALLOWED = ['PAID', 'PREPARING', 'CANCELLED'];
+const STAFF_ALLOWED = ['PAID', 'PREPARING', 'CANCELLED', 'DELIVERED'];
 
 /** POST /api/orders — Crear pedido (usuario autenticado) */
 export const createOrder = async (req, res, next) => {

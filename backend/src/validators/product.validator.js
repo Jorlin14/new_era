@@ -44,11 +44,10 @@ export const createProductSchema = Joi.object({
     }),
 
   imageUrl: Joi.string()
-    .uri({ scheme: ['http', 'https'] })
     .optional()
     .allow('')
     .messages({
-      'string.uri': 'La URL de la imagen no es válida. Debe comenzar con http:// o https://.',
+      'string.base': 'La URL de la imagen debe ser una cadena de texto.',
     }),
 
   categoryId: Joi.string()
@@ -76,7 +75,7 @@ export const updateProductSchema = Joi.object({
   stock: Joi.number().integer().min(0)
     .messages({ 'number.min': 'El stock no puede ser negativo.' }),
 
-  imageUrl: Joi.string().uri({ scheme: ['http', 'https'] }).allow(''),
+  imageUrl: Joi.string().allow(''),
 
   categoryId: Joi.string().uuid({ version: 'uuidv4' })
     .messages({ 'string.uuid': 'El ID de categoría debe ser un UUID válido.' }),
