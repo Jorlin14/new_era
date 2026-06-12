@@ -1,91 +1,92 @@
 # New Era Supermercado
 
-New Era Supermercado is a modern, full-stack e-commerce and logistics platform designed for grocery delivery. It features role-based access control, real-time geolocation tracking for deliveries, and seamless payment integration.
+New Era Supermercado es una plataforma moderna e integral de comercio electrónico y logística, diseñada específicamente para la entrega de víveres a domicilio. La aplicación cuenta con un sólido sistema de control de acceso basado en roles, rastreo de geolocalización en tiempo real para las entregas y una integración de pagos de alta seguridad.
 
-## Architecture
+## Arquitectura del Proyecto
 
-The project is built using a modern, decoupled architecture:
+El sistema está construido bajo una arquitectura desacoplada de alto rendimiento:
 
-- **Frontend:** Next.js (App Router), React, TailwindCSS
-- **Backend:** Node.js, Express.js, Prisma ORM
-- **Database:** PostgreSQL
-- **Integrations:** Wompi (Payments), Leaflet (Geolocation)
+- **Frontend:** Next.js (App Router), React, TailwindCSS.
+- **Backend:** Node.js, Express.js, Prisma ORM.
+- **Base de Datos:** PostgreSQL (alojada en Supabase).
+- **Integraciones de Terceros:** Wompi (Pasarela de Pagos), Leaflet (Rastreo GPS).
 
-## Modules & Roles
+## Módulos y Roles del Sistema
 
-The system is divided into functional domains tailored to specific operational roles:
+El proyecto se divide en dominios funcionales adaptados a roles operativos específicos:
 
-1. **Customer (Client)**
-   - Product browsing and cart management.
-   - Address management with GPS coordinates.
-   - Real-time order tracking.
-   - Secure checkout with Wompi.
+1. **Cliente (Customer)**
+   - Exploración del catálogo de productos y gestión del carrito de compras.
+   - Gestión de direcciones de entrega con coordenadas GPS.
+   - Seguimiento del estado del pedido en tiempo real.
+   - Flujo de pago seguro procesado a través de Wompi.
 
-2. **Cashier**
-   - Order pipeline management (Pending -> Paid -> Preparing).
-   - Validation of successful or failed deliveries.
-   - Quick statistics and dashboard overview.
+2. **Cajero (Cashier)**
+   - Gestión del flujo de las órdenes (Pendiente -> Pagado -> En Preparación).
+   - Validación del éxito o fracaso de las entregas despachadas.
+   - Panel de métricas y vista general de la operación.
 
-3. **Deliverer (Domiciliario)**
-   - Assignment of prepared orders.
-   - Route tracking and geolocation updates.
-   - Status updates (Dispatched).
+3. **Domiciliario (Deliverer)**
+   - Recepción y asignación de órdenes preparadas.
+   - Actualización de estado a Despachado al salir de la sede.
+   - Interfaz de rastreo en tiempo real para visualizar la ruta de entrega.
 
-4. **Administrator**
-   - User and role management.
-   - Inventory and product management.
-   - Category and promotional banner configuration.
-   - Full system metrics and oversight.
+4. **Administrador (Admin)**
+   - Gestión integral de usuarios, empleados y roles.
+   - Control de inventario, productos y categorías.
+   - Configuración de banners promocionales.
+   - Supervisión de métricas financieras y operativas.
 
-## Getting Started
+## Guía de Configuración
 
-### Prerequisites
+### Prerrequisitos
 
-- Node.js (v18 or higher)
-- PostgreSQL
-- npm or yarn
+- Node.js (versión 18 o superior).
+- PostgreSQL.
+- Gestor de paquetes: npm o yarn.
 
-### Installation
+### Instalación
 
-1. **Clone the repository:**
+1. **Clonar el repositorio:**
    ```bash
-   git clone <repository-url>
+   git clone <url-del-repositorio>
    cd new_era
    ```
 
-2. **Backend Setup:**
+2. **Configuración del Backend:**
    ```bash
    cd backend
    npm install
    ```
-   Configure your environment variables in `backend/.env` according to `backend/.env.example`.
-   Initialize the database:
+   Asegúrate de configurar las variables de entorno en el archivo `backend/.env` basándote en el archivo de ejemplo proporcionado.
+   
+   Sincroniza la estructura de la base de datos:
    ```bash
    npx prisma generate
    npx prisma db push
    ```
-   Start the backend development server:
+   Inicia el servidor de desarrollo:
    ```bash
    npm run dev
    ```
 
-3. **Frontend Setup:**
+3. **Configuración del Frontend:**
    ```bash
    cd frontend
    npm install
    ```
-   Configure your environment variables in `frontend/.env.local`.
-   Start the frontend development server:
+   Configura las variables de entorno en `frontend/.env.local`.
+   Inicia la aplicación cliente:
    ```bash
    npm run dev
    ```
 
-## Development Guidelines
+## Directrices de Desarrollo
 
-- Maintain strict role-based route protection on both backend middleware and frontend layouts.
-- Follow the established Prisma schema for all database migrations and updates.
-- Keep components modular and rely on the shared UI utilities in the `components/` directory.
+- **Seguridad:** Mantener y respetar la protección de rutas basada en roles, tanto en los middlewares del backend como en los layouts del frontend.
+- **Base de Datos:** Seguir el esquema definido en Prisma (`schema.prisma`) para todas las migraciones, relaciones y actualizaciones.
+- **Diseño UI:** Preservar la modularidad de los componentes y depender del sistema de diseño unificado ( TailwindCSS y componentes compartidos en `/components`).
 
-## License
+## Licencia
 
-This project is proprietary and confidential. Unauthorized copying or distribution of this codebase is strictly prohibited.
+Este proyecto es de carácter propietario y confidencial. Queda estrictamente prohibida la copia, distribución o reproducción no autorizada de este código fuente.
