@@ -23,6 +23,7 @@ export default function MyProfilePage() {
   const [loading, setLoading] = useState(true);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  const [showPasswords, setShowPasswords] = useState(false);
 
   const [profileData, setProfileData] = useState({
     name: '',
@@ -306,31 +307,59 @@ export default function MyProfilePage() {
                   <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Contraseña actual
                   </label>
-                  <input
-                    type="password"
-                    required
-                    value={passwordData.currentPassword}
-                    onChange={(e) =>
-                      setPasswordData({ ...passwordData, currentPassword: e.target.value })
-                    }
-                    className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:border-[#1c6554] dark:focus:border-green-500 focus:ring-4 focus:ring-[#1c6554]/10 dark:focus:ring-green-500/20 transition-all text-slate-900 dark:text-white"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPasswords ? "text" : "password"}
+                      required
+                      value={passwordData.currentPassword}
+                      onChange={(e) =>
+                        setPasswordData({ ...passwordData, currentPassword: e.target.value })
+                      }
+                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:border-[#1c6554] dark:focus:border-green-500 focus:ring-4 focus:ring-[#1c6554]/10 dark:focus:ring-green-500/20 transition-all text-slate-900 dark:text-white pr-12"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPasswords(!showPasswords)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-[#1c6554] dark:text-slate-400 dark:hover:text-green-400 focus:outline-none p-1 transition-colors"
+                      aria-label={showPasswords ? "Ocultar contraseñas" : "Mostrar contraseñas"}
+                    >
+                      {showPasswords ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Nueva contraseña
                   </label>
-                  <input
-                    type="password"
-                    required
-                    minLength={8}
-                    value={passwordData.newPassword}
-                    onChange={(e) =>
-                      setPasswordData({ ...passwordData, newPassword: e.target.value })
-                    }
-                    className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:border-[#1c6554] dark:focus:border-green-500 focus:ring-4 focus:ring-[#1c6554]/10 dark:focus:ring-green-500/20 transition-all text-slate-900 dark:text-white"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPasswords ? "text" : "password"}
+                      required
+                      minLength={8}
+                      value={passwordData.newPassword}
+                      onChange={(e) =>
+                        setPasswordData({ ...passwordData, newPassword: e.target.value })
+                      }
+                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:border-[#1c6554] dark:focus:border-green-500 focus:ring-4 focus:ring-[#1c6554]/10 dark:focus:ring-green-500/20 transition-all text-slate-900 dark:text-white pr-12"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPasswords(!showPasswords)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-[#1c6554] dark:text-slate-400 dark:hover:text-green-400 focus:outline-none p-1 transition-colors"
+                      aria-label={showPasswords ? "Ocultar contraseñas" : "Mostrar contraseñas"}
+                    >
+                      {showPasswords ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                     Mínimo 8 caracteres, una mayúscula, una minúscula y un número
                   </p>
@@ -340,16 +369,30 @@ export default function MyProfilePage() {
                   <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Confirmar nueva contraseña
                   </label>
-                  <input
-                    type="password"
-                    required
-                    minLength={8}
-                    value={passwordData.confirmPassword}
-                    onChange={(e) =>
-                      setPasswordData({ ...passwordData, confirmPassword: e.target.value })
-                    }
-                    className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:border-[#1c6554] dark:focus:border-green-500 focus:ring-4 focus:ring-[#1c6554]/10 dark:focus:ring-green-500/20 transition-all text-slate-900 dark:text-white"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showPasswords ? "text" : "password"}
+                      required
+                      minLength={8}
+                      value={passwordData.confirmPassword}
+                      onChange={(e) =>
+                        setPasswordData({ ...passwordData, confirmPassword: e.target.value })
+                      }
+                      className="w-full px-4 py-3 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:border-[#1c6554] dark:focus:border-green-500 focus:ring-4 focus:ring-[#1c6554]/10 dark:focus:ring-green-500/20 transition-all text-slate-900 dark:text-white pr-12"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPasswords(!showPasswords)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-[#1c6554] dark:text-slate-400 dark:hover:text-green-400 focus:outline-none p-1 transition-colors"
+                      aria-label={showPasswords ? "Ocultar contraseñas" : "Mostrar contraseñas"}
+                    >
+                      {showPasswords ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="flex gap-3">

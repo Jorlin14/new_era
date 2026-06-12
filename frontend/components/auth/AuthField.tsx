@@ -16,7 +16,7 @@
 
 'use client';
 
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 
 /** Props del componente AuthField */
 interface AuthFieldProps {
@@ -71,9 +71,13 @@ export default function AuthField({
   required = true,
   placeholder,
 }: AuthFieldProps) {
+  const [showPassword, setShowPassword] = useState(false);
+
   // Determinar si el label debe estar flotando (cuando hay valor o placeholder visible)
   const hasValue = value && value.length > 0;
   const shouldFloat = hasValue || placeholder;
+
+  const inputType = type === 'password' && showPassword ? 'text' : type;
 
   return (
     <fieldset className="relative group">
@@ -87,7 +91,7 @@ export default function AuthField({
         {/* Input controlado */}
         <input
           id={id}
-          type={type}
+          type={inputType}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           required={required}
@@ -96,6 +100,22 @@ export default function AuthField({
           className="outline-none peer flex-1 bg-transparent text-slate-900 dark:text-white text-base placeholder:text-slate-400 dark:placeholder:text-slate-500"
           aria-label={label}
         />
+
+        {/* Botón de mostrar/ocultar contraseña */}
+        {type === 'password' && (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="text-slate-500 hover:text-[#1c6554] dark:text-slate-400 dark:hover:text-green-400 focus:outline-none focus:text-[#1c6554] dark:focus:text-green-400 p-1 shrink-0 transition-colors"
+            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+          >
+            {showPassword ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/></svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            )}
+          </button>
+        )}
         
         {/* Etiqueta flotante con animación */}
         <label
