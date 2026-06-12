@@ -116,8 +116,16 @@ export const sendPasswordResetEmail = async ({ to, name, resetUrl }) => {
 
   // En desarrollo, muestra la URL de previsualización
   if (process.env.NODE_ENV !== 'production') {
-    console.log('📧 Email de prueba enviado!');
-    console.log('Preview URL:', nodemailer.getTestMessageUrl(info));
+    console.log('\n==============================================');
+    console.log('📧 EMAIL DE RECUPERACIÓN DE CONTRASEÑA ENVIADO');
+    console.log('==============================================');
+    console.log('Para:', to);
+    console.log('Token válido por:', '1 hora');
+    console.log('\n🔗 URL de reset:', resetUrl);
+    console.log('\n👁️  Preview del email:', nodemailer.getTestMessageUrl(info));
+    console.log('==============================================\n');
+  } else {
+    console.log(`📧 Email de recuperación enviado a: ${to}`);
   }
 
   return info;

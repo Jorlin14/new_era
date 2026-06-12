@@ -55,8 +55,13 @@ export default function Categories({ selectedCategory, onSelectCategory }: Categ
           </h2>
           <button 
             type="button"
-            className="text-sm font-medium text-[#1c6554] hover:underline"
-            onClick={() => onSelectCategory(null)}
+            className="text-sm font-medium text-[#1c6554] hover:underline cursor-pointer"
+            onClick={() => {
+              onSelectCategory(null);
+              if (scrollContainerRef.current) {
+                scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+              }
+            }}
           >
             Ver todas
           </button>

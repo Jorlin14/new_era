@@ -82,13 +82,12 @@ export const forgotPasswordSchema = Joi.object({
 // RESET PASSWORD SCHEMA
 export const resetPasswordSchema = Joi.object({
   token: Joi.string()
-    .length(64)
-    .hex()
+    .min(32)
     .required()
     .messages({
-      'string.length': 'El token no es válido.',
-      'string.hex': 'El token debe ser hexadecimal.',
+      'string.min': 'El token no es válido.',
       'any.required': 'El token es obligatorio.',
+      'string.empty': 'El token no puede estar vacío.',
     }),
 
   password: passwordSchema,

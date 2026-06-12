@@ -75,7 +75,7 @@ function ResetPasswordForm() {
       if (response.ok) {
         setMessage({
           type: 'success',
-          text: data.message || 'Contraseña restablecida correctamente.',
+          text: data.message || 'Contraseña restablecida correctamente. Redirigiendo al login...',
         });
         
         // Redirigir al login después de 3 segundos
@@ -83,15 +83,17 @@ function ResetPasswordForm() {
           router.push('/login');
         }, 3000);
       } else {
+        console.error('Error al restablecer:', data);
         setMessage({
           type: 'error',
-          text: data.message || 'Error al restablecer la contraseña.',
+          text: data.message || 'Error al restablecer la contraseña. Verifica que el enlace sea válido y no haya expirado.',
         });
       }
     } catch (error) {
+      console.error('Error de red:', error);
       setMessage({
         type: 'error',
-        text: 'Error de conexión. Verifica tu internet e intenta nuevamente.',
+        text: 'Error de conexión. Verifica que el backend esté corriendo e intenta nuevamente.',
       });
     } finally {
       setIsLoading(false);

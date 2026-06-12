@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
       if (response.ok) {
         setMessage({
           type: 'success',
-          text: data.message || 'Revisa tu correo para continuar con la recuperación.',
+          text: data.message || 'Revisa tu correo para continuar con la recuperación. Si estás en desarrollo, revisa la consola del backend para el enlace de prueba.',
         });
         setEmail('');
       } else {
@@ -39,9 +39,10 @@ export default function ForgotPasswordPage() {
         });
       }
     } catch (error) {
+      console.error('Error en forgot-password:', error);
       setMessage({
         type: 'error',
-        text: 'Error de conexión. Verifica tu internet e intenta nuevamente.',
+        text: 'Error de conexión. Verifica que el backend esté corriendo e intenta nuevamente.',
       });
     } finally {
       setIsLoading(false);
