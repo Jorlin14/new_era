@@ -15,8 +15,8 @@ import nodemailer from 'nodemailer';
  * En producción configura tu proveedor (Gmail, SendGrid, AWS SES, etc.)
  */
 const createTransporter = async () => {
-  // Si estamos en producción, usa las variables de entorno configuradas
-  if (process.env.NODE_ENV === 'production') {
+  // Si hay credenciales configuradas en el .env, usarlas (incluso en desarrollo)
+  if (process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASSWORD) {
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT || 587,
@@ -114,18 +114,19 @@ export const sendPasswordResetEmail = async ({ to, name, resetUrl }) => {
 
   const info = await transporter.sendMail(mailOptions);
 
-  // En desarrollo, muestra la URL de previsualización
-  if (process.env.NODE_ENV !== 'production') {
+  // Mostrar link de previsualización si se usó la cuenta de prueba de Ethereal
+  const testUrl = nodemailer.getTestMessageUrl(info);
+  if (testUrl) {
     console.log('\n==============================================');
-    console.log('📧 EMAIL DE RECUPERACIÓN DE CONTRASEÑA ENVIADO');
+    console.log('📧 EMAIL DE RECUPERACIÓN DE CONTRASEÑA (PRUEBA) ENVIADO');
     console.log('==============================================');
     console.log('Para:', to);
     console.log('Token válido por:', '1 hora');
     console.log('\n🔗 URL de reset:', resetUrl);
-    console.log('\n👁️  Preview del email:', nodemailer.getTestMessageUrl(info));
+    console.log('\n👁️  Preview del email:', testUrl);
     console.log('==============================================\n');
   } else {
-    console.log(`📧 Email de recuperación enviado a: ${to}`);
+    console.log(`📧 Email real de recuperación enviado a: ${to}`);
   }
 
   return info;
