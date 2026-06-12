@@ -28,7 +28,7 @@ export default function CashierProductsPage() {
     try {
       setLoading(true);
       const [productsData, categoriesData] = await Promise.all([
-        getProducts(), // Sin parámetros - traerá todos los productos activos
+        getProducts(undefined, undefined, undefined, 1000), // Traer todos los productos activos (hasta 1000)
         getCategories(),
       ]);
       // getProducts y getCategories devuelven arrays directamente
@@ -48,7 +48,7 @@ export default function CashierProductsPage() {
     
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesCategory = !selectedCategory || (product.category && product.category.id === selectedCategory);
+    const matchesCategory = !selectedCategory || product.categoryId === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
